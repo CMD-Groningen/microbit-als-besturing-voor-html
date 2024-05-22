@@ -77,8 +77,178 @@ De HTML pagina, de HEX file en het MP3 geluidsbestandje zijn alle drie meegeleve
 1. Maak een HTML bestand aan op de volgende manier:
 
    - Maak een leeg mapje/folder aan en open deze in VsCode.
-   - Maak een bestand aan genaamd **index.html** en kopieer de gegeven HTML-code in dit nieuw bestand.
+   - Maak een bestand aan genaamd **index.html** en kopieer de gegeven HTML-code hieronder in dit nieuw bestand.
    - Voeg het **geluidsbestand** (disco.mp3) toe in diezelfde folder. Dus zorg ervoor dat je een geluidsbestand genaamd `disco.mp3` hebt en plaats dit in dezelfde directory als de `index.html`.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro:bit CSS Animatie</title>
+    <style>
+        * {
+            margin: 20px;
+        }
+
+        .grijs {
+            width: 300px;
+            height: 300px;
+            background-color: grey;
+        }
+
+        .groen {
+            background-color: green;
+            animation-name: zoom;
+            animation-duration: .5s;
+            transform-origin: center;
+            transition: all 1s;
+        }
+
+        .blauw {
+            background-color: blue;
+            animation-name: zoom;
+            animation-duration: .5s;
+            transform-origin: center;
+            transition: all 1s;
+        }
+
+        .shake {
+            animation-name: shake;
+            animation-duration: .3s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            transform-origin: center;
+            transition: all 1s;
+        }
+
+        @keyframes zoom {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.5);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(150px, 40px);
+            }
+
+            100% {
+                transform: translate(300px, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="animate" class="grijs"></div>
+    <button id="connectButton">Verbinden met micro:bit</button>
+    <audio id="shakeSound" src="disco.mp3" preload="auto"></audio>
+    <script>
+        // Check if the browser supports Web Serial API
+        if ("serial" in navigator) {
+            const animateDiv = document.getElementById('animate');
+            const connectButton = document.getElementById('connectButton');
+            const shakeSound = document.getElementById('shakeSound');
+
+            async function connect() {
+                try {
+                    // Request serial port
+                    const port = await navigator.serial.requestPort();
+                    await port.open({ baudRate: 115200 }); // Ensure baud rate matches
+
+                    console.log("Connected to the micro:bit");
+
+                    // Read data from micro:bit
+                    const decoder = new TextDecoderStream();
+                    const inputDone = port.readable.pipeTo(decoder.writable);
+                    const inputStream = decoder.readable;
+
+                    const reader = inputStream.getReader();
+                    let buffer = '';
+
+                    while (true) {
+                        const { value, done } = await reader.read();
+                        if (done) {
+                            // Reader closed
+                            console.log("Reading from serial port ended");
+                            break;
+                        }
+                        buffer += value;
+                        let lines = buffer.split('\n');
+                        buffer = lines.pop(); // Keep the last partial line in the buffer
+                        for (let line of lines) {
+                            console.log("Data received from micro:bit: ", line);
+                            processData(line.trim());
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error connecting to the micro:bit: ", error);
+                }
+            }
+
+            function processData(data) {
+                const animateDiv = document.getElementById('animate');
+                const shakeSound = document.getElementById('shakeSound');
+
+                switch (data) {
+                    case "L":
+                        // Switch animation class
+                        shakeSound.pause();
+                        shakeSound.currentTime = 0;
+                        animateDiv.classList.remove('blauw');
+                        animateDiv.classList.remove('shake');
+                        void animateDiv.offsetWidth; // Force reflow for animation
+                        animateDiv.classList.add('groen');
+                        break;
+                    case "E":
+                        // Switch animation class
+                        shakeSound.pause();
+                        shakeSound.currentTime = 0;
+                        animateDiv.classList.remove('groen');
+                        animateDiv.classList.remove('shake');
+                        void animateDiv.offsetWidth; // Force reflow for animation
+                        animateDiv.classList.add('blauw');
+                        break;
+                    case "S":
+                        // Switch animation class
+                        void animateDiv.offsetWidth; // Force reflow for animation
+                        animateDiv.classList.add('shake');
+                        shakeSound.play();
+                        break;
+                    default:
+                        // Handle unknown command or data
+                        console.log("Unknown command or data received: ", data);
+                }
+            }
+
+            // Add event listener to connect when the button is clicked
+            connectButton.addEventListener('click', connect);
+        } else {
+            console.log("Web Serial API is not supported in this browser.");
+        }
+    </script>
+
+</body>
+
+</html>
+```
+     
 
 ### Uitvoeren in de browser
 
