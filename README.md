@@ -29,8 +29,6 @@ Door deze stappen te volgen, kun je de micro:bit gebruiken om interacties in bij
 - een **HEX bestand** met code voor de Micro:bit
 - en een geluidsbestandje genaamd **disco.mp3**
 
-De HTML pagina, de HEX file en het MP3 geluidsbestandje zijn alle drie meegeleverd als je dit Github project download naar je laptop! > klik hier
-
 ## Stappen
 
 ### Voorbereiding van de Micro:bit:
