@@ -2,6 +2,8 @@
 
 <img src="bewegingssensor_gestures.png" style="width:550px">
 
+https://github.com/CMD-Groningen/microbit-als-besturing-voor-html/blob/b8aff82039d4dfae22b85738cb4a3186b5bffdae/bewegingssensor-preview.mp4
+
 Bestanden **downloaden** naar je laptop? [Klik hier](https://github.com/CMD-Groningen/microbit_als_besturing_voor_html/archive/refs/heads/master.zip)     
 
 Dit is een werkend voorbeeld inclusief instructies over hoe je een microbit als input kan gebruiken om apparaten buiten de micro:bit te bedienen. Door bijvoorbeeld in dit geval de microbit te schudden of ondersteboven te draaien, kun je videos, animaties of mp3 audio afspelen in de browser op je laptop of tablet. De micro:bit is dan de input en de laptop of tablet de output.
