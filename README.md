@@ -1,6 +1,6 @@
 # Micro:bit bewegingssensor <br> voor besturing van CSS animaties,<br> video of audio in HTML pagina's
 
-<img src="bewegingssensor_gestures.png" style="width:450px">
+<img src="bewegingssensor_gestures.png" style="width:550px">
 
 Bestanden **downloaden** naar je laptop? [Klik hier](https://github.com/CMD-Groningen/microbit_als_besturing_voor_html/archive/refs/heads/master.zip)     
 
