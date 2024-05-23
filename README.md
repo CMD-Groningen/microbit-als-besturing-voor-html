@@ -1,10 +1,9 @@
-# Micro:bit bewegingssensor voor besturing van animaties en audio in HTML pagina
+# Micro:bit bewegingssensor <br> voor besturing van CSS animaties,<br> video of audio in HTML pagina's
 
-<img src="bewegingssensor_gestures.png" style="width:400px">
+<img src="bewegingssensor_gestures.png" style="width:450px">
 
 Bestanden **downloaden** naar je laptop? [Klik hier](https://github.com/CMD-Groningen/flex-versus-grid/archive/refs/heads/master.zip)     
-Preview in de browser? [Klik hier](https://cmd-groningen.github.io/flex-versus-grid)  
-Speel live met deze code in **CodeSandbox** > [Klik hier!](https://codesandbox.io/s/github/CMD-Groningen/flex-versus-grid) 
+Preview HTML bestand in de browser? [Klik hier](https://cmd-groningen.github.io/flex-versus-grid)  
 
 Dit is een werkend voorbeeld inclusief instructies over hoe je een microbit als input kan gebruiken om apparaten buiten de micro:bit te bedienen. Door bijvoorbeeld in dit geval de microbit te schudden of ondersteboven te draaien, kun je videos, animaties of mp3 audio afspelen in de browser op je laptop of tablet. De micro:bit is dan de input en de laptop of tablet de output.
 
