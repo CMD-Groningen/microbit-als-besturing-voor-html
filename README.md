@@ -2,7 +2,7 @@
 
 <img src="bewegingssensor_gestures.png" style="width:550px">
 
-https://github.com/CMD-Groningen/microbit-als-besturing-voor-html/blob/b8aff82039d4dfae22b85738cb4a3186b5bffdae/bewegingssensor-preview.mp4
+<video src="https://github.com/CMD-Groningen/microbit-als-besturing-voor-html/blob/b8aff82039d4dfae22b85738cb4a3186b5bffdae/bewegingssensor-preview.mp4">
 
 Bestanden **downloaden** naar je laptop? [Klik hier](https://github.com/CMD-Groningen/microbit_als_besturing_voor_html/archive/refs/heads/master.zip)     
 
