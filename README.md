@@ -40,7 +40,7 @@ Door deze stappen te volgen, kun je de micro:bit gebruiken om interacties in bij
 
 - Voeg de volgende code toe in de JavaScript of Blok modus  (je kunt bovenin de editor kiezen tussen Blocks of JavaScript invoer)
 
-- Deze code zorgt ervoor dat input die je maakt op de micro:bit niet alleen naar het LED schermpje, maar ook via de USB kabel naar je laptop toegestuurd word (PS. dit is de microbit code ook in het HEX bestand zit)
+- Deze code zorgt ervoor dat input die je maakt op de micro:bit niet alleen naar het LED schermpje, maar ook via de USB kabel naar je laptop toegestuurd word!
 
   ```javascript
   serial.redirectToUSB()
