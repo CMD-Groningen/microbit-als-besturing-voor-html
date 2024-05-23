@@ -1,285 +1,342 @@
-# Micro:bit bewegingssensor <br> voor besturing van CSS animaties,<br> video of audio in HTML pagina's
+# Micro:bit uitbreiden met pinnen
+### Verander de Micro:bit in een Arduino of Makey Makey
 
-https://github.com/CMD-Groningen/microbit-als-besturing-voor-html/assets/5694412/3765e7df-5673-455d-8fce-cf2d35d965a6
+https://github.com/CMD-Groningen/microbit-uitbreiden-met-pinnen/assets/5694412/1db22cac-5a21-40f8-b2c6-d2d7c5012b52
 
-<img src="bewegingssensor_gestures.png" style="width:550px">
+In deze tutorial zit een werkend voorbeeld van hoe je een HTML pagina met interface elementen of andere content daarin (animaties, audio, video) kan bedienen of besturen met externe hardware, zoals fysieke knoppen, sliders of sensoren. We doen dit met een Micro:bit waarvan we de contactpunten uitbreiden. Hieronder staan de stappen die je kunt volgen om je project werkend te krijgen. Volg deze instructies om de bestanden te openen, te testen in de browser en de Micro:bit code te downloaden naar de Micro:bit met de aangesloten **Tru Components TC-9072548 breakout board** (hieronder meer daarover)
 
-Bestanden **downloaden** naar je laptop? [Klik hier](https://github.com/CMD-Groningen/microbit_als_besturing_voor_html/archive/refs/heads/master.zip)     
+## Voorkennis
+Als je dacht dat alleen Arduino's een heleboel pinnen hadden om hardware op aan te sluiten... De Micro:bit heeft er net zoveel, 22 pinnen! En het voordeel van de Micro:bit is ook nog eens dat er al veel hardware op zit die je als input kan gebruiken, zoals Bluetooth, bewegingssensoren, een speaker, compas, en een microfoon. En het heeft een veel simpelere editor.
 
-Dit is een werkend voorbeeld inclusief instructies over hoe je een microbit als input kan gebruiken om apparaten buiten de micro:bit te bedienen. Door bijvoorbeeld in dit geval de microbit te schudden of ondersteboven te draaien, kun je videos, animaties of mp3 audio afspelen in de browser op je laptop of tablet. De micro:bit is dan de input en de laptop of tablet de output.
+### Arduino Uno
+<img src="documentatie/arduino_schematics_pin.jpg">
 
-Door deze stappen te volgen, kun je de micro:bit gebruiken om interacties in bijvoorbeeld een webpagina te besturen, wat een leuke manier is om fysieke input en bediening te integreren met laptop of tablet en interface design. 
+### Micro:bit
+<img src="documentatie/microbit-pinnen.png">
 
-### Wat zit er in de download?
+## Breakout boards
 
-- **HTML en CSS** 
-  - De HTML-pagina bevat een div (`#animate`) en een knop (`#connectButton`).
-  - De CSS code bevat verschillende CSS classes (`grijs`, `groen`, `blauw`, `shake`) voor de div met bijbehorende animaties.
-- **JavaScript** 
-  - Controleert of de browser de Web Serial API ondersteunt.
-  - Beheert de verbinding met de micro:bit via de seriële USB poort.
-  - Leest data van de micro:bit en verwerkt deze om de CSS classes op de DIV te wijzigen, wat verschillende animaties activeert.
-  - Laat de DIV "dansen" en speelt een geluid af bij de `Shake`-actie.
-- **Micro:bit code**
-  - Stuurt seriële USB data naar de computer gebaseerd op gedetecteerde gebaren input van de Micro:bit (`LogoUp`, `LogoDown`, `Shake`).
+door een breakout board aan een microbit te klikken kunnen we bij deze 22 inputs. De pinnen voor deze inputs zitten dan op dit breakoutboard ook wel penmodule genoem. Voor dit project gebruikte ik de **Tru Components TC-9072548 Sensormodule** maar je kunt elk geschikte beakoutboard hiervoor gebruiken. Er zijn breaout boards in verschillende soorten en maten voor de Micro:bit, sommige van hen kun je drukken op een breadboard om jumper kabels in te steken.
 
-## Wat heb je nodig?
+<img src="documentatie/TC-9072500_breakout_board.jpg">
 
-- Een computer met een moderne webbrowser die de Web Serial API ondersteunt (bijv. Google Chrome).
-- Een micro:bit (versie 2 heeft de voorkeur, maar versie 1 kan ook) met USB-kabel.
-- Een **HTML pagina** met code voor de browser 
-- een **HEX bestand** met code voor de Micro:bit
-- en een geluidsbestandje genaamd **disco.mp3**
+Voor deze tutorial heb ik zelf de Tru Components TC-9072548 Sensormodule gebruikt om de Micro:bit uit te breiden met pinnen. Hier liggen er ook een heleboel van bij de MakerSpace.
 
-## Stappen
+<img src="documentatie/tru_components_TC.jpg">
+<img src="documentatie/aangesloten.png">
 
-### Voorbereiding van de Micro:bit:
+## Benodigdheden:
 
-1. Open de Makecode editor op https://makecode.microbit.org/
-2. Kopieer onderstaande microbit code naar de editor:
+- Een editor, bijvoorbeeld VSCode
+- een Micro:bit
+- een Tru Components TC-9072548 Sensormodule (pinnenbord)
+- Micro USB-kabel
+- 3 werkbestanden (een HTML, CSS en JavaScript bestand)
+- als je dit project dowload, zitten deze bestanden al in de folder **pinnen-voorbeeld**)!!
+- de HEX file met de code voor de Micro:bit
 
-- Klik op `New Project`.
 
-- Voeg de volgende code toe in de JavaScript of Blok modus  (je kunt bovenin de editor kiezen tussen Blocks of JavaScript invoer)
+## 1. Voorbereiding
 
-- Deze code zorgt ervoor dat input die je maakt op de micro:bit niet alleen naar het LED schermpje, maar ook via de USB kabel naar je laptop toegestuurd word!
+Download de folder **pinnen-voorbeeld** naar je laptop. Daar zitten de 3 bestanden al in die je nodig hebt (HTML, CSS en JavaScript) Of je maakt zelf een folder aan op je latop en plaats daar onderstaande bestanden in:
 
-  ```javascript
-  serial.redirectToUSB()
-  basic.forever(function () {
-      if (input.isGesture(Gesture.LogoUp)) {
-          basic.showString("L")
-          serial.writeLine("L")
-          basic.pause(1000)
-          basic.clearScreen()
-      }
-      if (input.isGesture(Gesture.LogoDown)) {
-          basic.showString("E")
-          serial.writeLine("E")
-          basic.pause(1000)
-          basic.clearScreen()
-      }
-      if (input.isGesture(Gesture.Shake)) {
-          basic.showString("S")
-          serial.writeLine("S")
-          basic.pause(1000)
-          basic.clearScreen()
-      }
-  })
-  ```
-Als je de code in de Micro:bit editor hebt geplakt, ziet het er als blokstructuur zo uit:
+1. **HTML Bestand**:
 
-<img src="microbit_code_blocks.png" style="width:400px">
-
-### Upload de code naar de micro:bit
-
-- Sluit de micro:bit aan op je computer via de USB-kabel.
-- Je kunt op de paarse "download" button helemaal links onderin de editor klikken om de code naar je micro:bit te kopiëren.
-- Je kunt de code ook op een andere manier op je microbit opslaan, namelijk:
-- download de `.hex` file naar je computer.
-- Sleep de gedownloade `.hex` file naar de micro:bit drive die op je computer verschijnt.
-
-### Voorbereiding van de HTML-pagina
-
-1. Maak een HTML bestand aan op de volgende manier:
-
-   - Maak een leeg mapje/folder aan en open deze in VsCode.
-   - Maak een bestand aan genaamd **index.html** en kopieer de gegeven HTML-code hieronder in dit nieuw bestand.
-   - Voeg het **geluidsbestand** (disco.mp3) toe in diezelfde folder. Dus zorg ervoor dat je een geluidsbestand genaamd `disco.mp3` hebt en plaats dit in dezelfde directory als de `index.html`.
+Maak een nieuw bestand in je project map genaamd **index.html** en plak de volgende code erin:
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Micro:bit CSS Animatie</title>
-    <style>
-        * {
-            margin: 20px;
-        }
-
-        .grijs {
-            width: 300px;
-            height: 300px;
-            background-color: grey;
-        }
-
-        .groen {
-            background-color: green;
-            animation-name: zoom;
-            animation-duration: .5s;
-            transform-origin: center;
-            transition: all 1s;
-        }
-
-        .blauw {
-            background-color: blue;
-            animation-name: zoom;
-            animation-duration: .5s;
-            transform-origin: center;
-            transition: all 1s;
-        }
-
-        .shake {
-            animation-name: shake;
-            animation-duration: .3s;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-            animation-direction: alternate;
-            transform-origin: center;
-            transition: all 1s;
-        }
-
-        @keyframes zoom {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.5);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes shake {
-            0% {
-                transform: translate(0, 0);
-            }
-
-            50% {
-                transform: translate(150px, 40px);
-            }
-
-            100% {
-                transform: translate(300px, 0);
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <div id="animate" class="grijs"></div>
-    <button id="connectButton">Verbinden met micro:bit</button>
-    <audio id="shakeSound" src="disco.mp3" preload="auto"></audio>
-    <script>
-        // Check if the browser supports Web Serial API
-        if ("serial" in navigator) {
-            const animateDiv = document.getElementById('animate');
-            const connectButton = document.getElementById('connectButton');
-            const shakeSound = document.getElementById('shakeSound');
-
-            async function connect() {
-                try {
-                    // Request serial port
-                    const port = await navigator.serial.requestPort();
-                    await port.open({ baudRate: 115200 }); // Ensure baud rate matches
-
-                    console.log("Connected to the micro:bit");
-
-                    // Read data from micro:bit
-                    const decoder = new TextDecoderStream();
-                    const inputDone = port.readable.pipeTo(decoder.writable);
-                    const inputStream = decoder.readable;
-
-                    const reader = inputStream.getReader();
-                    let buffer = '';
-
-                    while (true) {
-                        const { value, done } = await reader.read();
-                        if (done) {
-                            // Reader closed
-                            console.log("Reading from serial port ended");
-                            break;
-                        }
-                        buffer += value;
-                        let lines = buffer.split('\n');
-                        buffer = lines.pop(); // Keep the last partial line in the buffer
-                        for (let line of lines) {
-                            console.log("Data received from micro:bit: ", line);
-                            processData(line.trim());
-                        }
-                    }
-                } catch (error) {
-                    console.error("Error connecting to the micro:bit: ", error);
-                }
-            }
-
-            function processData(data) {
-                const animateDiv = document.getElementById('animate');
-                const shakeSound = document.getElementById('shakeSound');
-
-                switch (data) {
-                    case "L":
-                        // Switch animation class
-                        shakeSound.pause();
-                        shakeSound.currentTime = 0;
-                        animateDiv.classList.remove('blauw');
-                        animateDiv.classList.remove('shake');
-                        void animateDiv.offsetWidth; // Force reflow for animation
-                        animateDiv.classList.add('groen');
-                        break;
-                    case "E":
-                        // Switch animation class
-                        shakeSound.pause();
-                        shakeSound.currentTime = 0;
-                        animateDiv.classList.remove('groen');
-                        animateDiv.classList.remove('shake');
-                        void animateDiv.offsetWidth; // Force reflow for animation
-                        animateDiv.classList.add('blauw');
-                        break;
-                    case "S":
-                        // Switch animation class
-                        void animateDiv.offsetWidth; // Force reflow for animation
-                        animateDiv.classList.add('shake');
-                        shakeSound.play();
-                        break;
-                    default:
-                        // Handle unknown command or data
-                        console.log("Unknown command or data received: ", data);
-                }
-            }
-
-            // Add event listener to connect when the button is clicked
-            connectButton.addEventListener('click', connect);
-        } else {
-            console.log("Web Serial API is not supported in this browser.");
-        }
-    </script>
-
-</body>
-
-</html>
+     html
+     Copy code
+     <!DOCTYPE html>
+     <html lang="en">
+     <head>
+         <meta charset="UTF-8">
+         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <link rel="stylesheet" href="style.css">
+         <title>Test voor Microbit slider</title>
+     </head>
+     <body>
+         <section class="een" id="een">1</section>
+         <section class="twee" id="twee">2</section>
+         <section class="drie" id="drie">3</section>
+         <section class="vier" id="vier">4</section>
+         <section class="vijf" id="vijf">5</section>
+     </body>
+     <script src="javascript.js"></script>
+     </html>
 ```
+
+2. **CSS Bestand**:
+
+Maak een nieuw bestand in de project map genaamd **style.css** en voeg je CSS vormgeving toe:
+
+```CSS
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+.een {
+    background: purple;
+}
+
+.twee {
+    background: orange;
+}
+
+.drie {
+    background: green;
+}
+
+.vier {
+    background: darkred;
+}
+
+.vijf {
+    background: darkcyan;
+}
+
+section {
+    width: 100vw;
+    height: 100vh;
+    font-size: 300px;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: white;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+/* De button om toestemming te verlenen voor de USB poort */
+button {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    font-size: 20px;
+    font-family: sans-serif;
+    font-weight: bold;
+    background: white;
+    border: none;
+    cursor: pointer;
+}
+```
+
+3. **JavaScript Bestand**:
+
+Maak een nieuw bestand in je project map genaamd **javascript.js** en plak de volgende code erin:
+
+```javascript
+     javascript
+     Copy code
+     // Define a function to handle key events
+     function handleKey(eventKey) {
+         const een = document.getElementById("een");
+         const twee = document.getElementById("twee");
+         const drie = document.getElementById("drie");
+         const vier = document.getElementById("vier");
+         const vijf = document.getElementById("vijf");
      
+         if (eventKey === "L") {
+             een.style.display = "grid";
+             twee.style.display = "none";
+             drie.style.display = "none";
+             vier.style.display = "none";
+             vijf.style.display = "none";
+         } else if (eventKey === "R") {
+             een.style.display = "none";
+             twee.style.display = "grid";
+             drie.style.display = "none";
+             vier.style.display = "none";
+             vijf.style.display = "none";
+         } else if (eventKey === "U") {
+             een.style.display = "none";
+             twee.style.display = "none";
+             drie.style.display = "grid";
+             vier.style.display = "none";
+             vijf.style.display = "none";
+         } else if (eventKey === "D") {
+             een.style.display = "none";
+             twee.style.display = "none";
+             drie.style.display = "none";
+             vier.style.display = "grid";
+             vijf.style.display = "none";
+         } else if (eventKey === "W") {
+             een.style.display = "none";
+             twee.style.display = "none";
+             drie.style.display = "none";
+             vier.style.display = "none";
+             vijf.style.display = "grid";
+         }
+     }
+     
+     // Add event listener to handle keydown events
+     document.addEventListener("keydown", function (event) {
+         handleKey(event.key.toUpperCase());
+     });
+     
+     // Check if the Web Serial API is supported
+     if ("serial" in navigator) {
+         const connectButton = document.createElement("button"); // Create a connect button
+         connectButton.textContent = "Micro:bit linken"; // Set button text
+         document.body.appendChild(connectButton); // Append button to the document body
+     
+         async function connect() {
+             try {
+                 const port = await navigator.serial.requestPort();
+                 await port.open({ baudRate: 115200 });
+     
+                 console.log("Er is verbinding met de micro:bit!");
+     
+                 const decoder = new TextDecoderStream();
+                 const inputDone = port.readable.pipeTo(decoder.writable);
+                 const inputStream = decoder.readable;
+     
+                 const reader = inputStream.getReader();
+                 let buffer = "";
+     
+                 while (true) {
+                     const { value, done } = await reader.read();
+                     if (done) {
+                         console.log("Serial poort gesloten");
+                         break;
+                     }
+     
+                     if (value) {
+                         // Append received data to buffer
+                         buffer += value;
+     
+                         // Process buffer to extract complete lines
+                         let newlineIndex;
+                         while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
+                             const completeLine = buffer.substring(0, newlineIndex).trim();
+                             buffer = buffer.substring(newlineIndex + 1);
+     
+                             if (completeLine) {
+                                 console.log("Ontvangen data van micro:bit:", completeLine);
+                                 handleKey(completeLine);
+                             }
+                         }
+                     }
+                 }
+             } catch (error) {
+                 console.error("Er is een probleem met het aanroepen van de micro:bit: ", error);
+             }
+         }
+     
+         connectButton.addEventListener("click", connect);
+     } else {
+         console.log("Web Serial API wordt niet ondersteund door deze browser.");
+     }
+```
 
-### Uitvoeren in de browser
 
-1. **Open de HTML-pagina in je browser**:
-   - Dubbelklik op `index.html` om deze in je standaardwebbrowser te openen. Zorg ervoor dat je een browser gebruikt die de Web Serial API ondersteunt (zoals Google Chrome).
-2. **Verbind de micro:bit met de browser**:
-   - Klik op de button "Verbinden met micro:bit" op de geopende HTML-pagina.
-   - Er verschijnt een pop-up waarin je de micro:bit kunt selecteren. Kies de micro:bit en klik op `Connect`.
-   - Rechtsklik in de HTML pagina en kies in het dropdownmenu voor **inspect** om de Google Chrome code inspector te openen. In het tabblad van de **console** kun je precies zien wat er van moment tot moment gebeurt op de achtergrond terwijl de micro:bit met de browser communiceert!
+## 3. Micro:bit Voorbereiden
 
-### Interactie met de micro:bit en de HTML pagina
+- **Verbind de Micro:bit** met je computer via een Micro USB-kabel.
+- open de Micro:bit MakeCode editor en maak een nieuwe project aan
+- Open de HEX file genaamd **microbit_pinnen_lezen_slider.hex** in de Micro:bit MakeCode editor (door hem te slepen in het venster)
+- Dezelfde code van de HEX file staat ook hieronder. Je kan hem ook kopieren en plakken in de microbit editor!
+- Download daarna de code naar je Micro:bit!
+- Ontkoppel de Micro:bit door the klikken op "ontkoppel micro:bit rechts onderin de editor.
 
-- Zodra de verbinding is gemaakt, kun je de micro:bit verschillende gebaren laten detecteren:
-  - **Logo omhoog (Logo Up)**: De div verandert naar een groene achtergrond en wordt vergroot en verkleind.
-  - **Logo omlaag (Logo Down)**: De div verandert naar een blauwe achtergrond en wordt vergroot en verkleind.
-  - **Schudden (Shake)**: De div begint te schudden en het geluid `disco.mp3` wordt afgespeeld.
+``` javascript
+let currentStateP9 = 0
+let currentStateP8 = 0
+let currentStateP2 = 0
+let currentStateP1 = 0
+let currentStateP0 = 0
 
-----------------------
-**David van den Bor**  
+// sends the microbit output to USB
+serial.redirectToUSB()
+// Configure the pins with internal pull-up resistors
+pins.setPull(DigitalPin.P0, PinPullMode.PullUp)
+pins.setPull(DigitalPin.P1, PinPullMode.PullUp)
+pins.setPull(DigitalPin.P2, PinPullMode.PullUp)
+pins.setPull(DigitalPin.P8, PinPullMode.PullUp)
+pins.setPull(DigitalPin.P9, PinPullMode.PullUp)
 
-<img src="https://avatars.githubusercontent.com/u/124282406" style="width: 80px; max-width: 100%;"><img src="https://github.com/CMD-Groningen/.github/raw/main/davidvandenbor-rond.png" style="width: 70px; max-width: 100%;">
+// Variables to store the last button states
+let lastStateP0 = 1
+let lastStateP1 = 1
+let lastStateP2 = 1
+let lastStateP8 = 1
+let lastStateP9 = 1
 
-Docent Communicatie & Multimedia Design @ Hanzehogeschool Groningen  
-d.b.p.van.den.bor@pl.hanze.nl  
+basic.forever(function () {
+    currentStateP0 = pins.digitalReadPin(DigitalPin.P0)
+    currentStateP1 = pins.digitalReadPin(DigitalPin.P1)
+    currentStateP2 = pins.digitalReadPin(DigitalPin.P2)
+    currentStateP8 = pins.digitalReadPin(DigitalPin.P8)
+    currentStateP9 = pins.digitalReadPin(DigitalPin.P9)
 
-https://github.com/CMD-Groningen  
-https://github.com/davidvandenbor
+    if (currentStateP0 == 0 && lastStateP0 == 1) {
+        basic.showString("L")
+        serial.writeString("" + ("L\n"))
+        basic.pause(300)
+        basic.clearScreen()
+    }
+    if (currentStateP1 == 0 && lastStateP1 == 1) {
+        basic.showString("R")
+        serial.writeString("" + ("R\n"))
+        basic.pause(300)
+        basic.clearScreen()
+    }
+    if (currentStateP2 == 0 && lastStateP2 == 1) {
+        basic.showString("U")
+        serial.writeString("" + ("U\n"))
+        basic.pause(300)
+        basic.clearScreen()
+    }
+    if (currentStateP8 == 0 && lastStateP8 == 1) {
+        basic.showString("D")
+        serial.writeString("" + ("D\n"))
+        basic.pause(300)
+        basic.clearScreen()
+    }
+    if (currentStateP9 == 0 && lastStateP9 == 1) {
+        basic.showString("W")
+        serial.writeString("" + ("W\n"))
+        basic.pause(300)
+        basic.clearScreen()
+    }
+
+    // Update last states
+    lastStateP0 = currentStateP0
+    lastStateP1 = currentStateP1
+    lastStateP2 = currentStateP2
+    lastStateP8 = currentStateP8
+    lastStateP9 = currentStateP9
+
+    // Small pause to prevent high CPU usage
+    basic.pause(50)
+})
+```
+in de code editor zien de blokken er zo uit nadat je de microbit code hebt gekopieerd:
+
+<img src="microbit-code.png" />
+
+## 4. Micro:bit met module verbinden met de Browser
+
+1. **Sensormodule Aansluiten**: Verbind de Tru Components TC-9072548 Sensormodule aan de Micro:bit. Steek vervolgens jumperkabels op de **gele pinnen, dus PIN0, PIN1, PIN2, PIN8 en PIN9**. Steek vervolgens 1 jumperkabel op 1 van de donkerblauwe pinnen, maakt niet specifiek uit welke (helemaal onderaan op de foto hieronder, waar staat "G") 
+
+PAS OP: steek niets in de rode pinnen!!
+
+<img src="documentatie/1200x1034.jpg">
+
+## 5. Testen!
+
+   - Open je project in Google Chrome via Live Server (VsCode).
+   - Klik op de "Micro:bit linken" button rechts bovenin de HTML pagina om verbinding te maken met de Micro:bit.
+   - Wanneer de verbinding tot stand is gebracht, kun je de kabeltjes gebruiken om de secties op je webpagina te veranderen (de sliders laten verspringen van 1 naar 2 naar 3 enzovoorts)
+   - Ga naar slide 1 bijvoorbeeld door de grond kabel (G) het draadje van PIN 1 aan te raken.
+   - Ga naar slide 2 bijvoorbeeld door de grond kabel (G) het draadje van PIN 1 aan te raken.
+   - Ga naar slide 3 bijvoorbeeld door de grond kabel (G) het draadje van PIN 1 aan te raken.
+   - Enzovoorts!
+   - **Controleer de console** in je browser om te zien of er gegevens van de Micro:bit worden ontvangen.
+
+<img src="documentatie/console-log-browser.png">
+
+Met deze stappen zou je project volledig functioneel moeten zijn. Als er problemen zijn, controleer dan de verbindingen en zorg ervoor dat je browser de Web Serial API ondersteunt.
