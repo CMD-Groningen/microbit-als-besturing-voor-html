@@ -1,5 +1,6 @@
 # Micro:bit bewegingssensor voor besturing van animaties en audio in HTML pagina
 
+<img src="bewegingssensor_gestures.png" style="width:300px">
 
 Bestanden **downloaden** naar je laptop? [Klik hier](https://github.com/CMD-Groningen/flex-versus-grid/archive/refs/heads/master.zip)     
 Preview in de browser? [Klik hier](https://cmd-groningen.github.io/flex-versus-grid)  
@@ -68,9 +69,9 @@ De HTML pagina, de HEX file en het MP3 geluidsbestandje zijn alle drie meegeleve
       }
   })
   ```
-Als je de code in de Micro:bit editor hebt geplakt, ziet het er als blokstructuur er zo uit:
+Als je de code in de Micro:bit editor hebt geplakt, ziet het er als blokstructuur zo uit:
 
-<img src="microbit_blocks.png" style="width:300px">
+<img src="microbit_code_blocks.png" style="width:300px">
 
 ### Upload de code naar de micro:bit
 
