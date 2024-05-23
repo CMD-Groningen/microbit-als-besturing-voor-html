@@ -1,5 +1,10 @@
 # Micro:bit bewegingssensor voor besturing van animaties en audio in HTML pagina
 
+
+Bestanden **downloaden** naar je laptop? [Klik hier](https://github.com/CMD-Groningen/flex-versus-grid/archive/refs/heads/master.zip)     
+Preview in de browser? [Klik hier](https://cmd-groningen.github.io/flex-versus-grid)  
+Speel live met deze code in **CodeSandbox** > [Klik hier!](https://codesandbox.io/s/github/CMD-Groningen/flex-versus-grid) 
+
 Dit is een werkend voorbeeld inclusief instructies over hoe je een microbit als input kan gebruiken om apparaten buiten de micro:bit te bedienen. Door bijvoorbeeld in dit geval de microbit te schudden of ondersteboven te draaien, kun je videos, animaties of mp3 audio afspelen in de browser op je laptop of tablet. De micro:bit is dan de input en de laptop of tablet de output.
 
 Door deze stappen te volgen, kun je de micro:bit gebruiken om interacties in bijvoorbeeld een webpagina te besturen, wat een leuke manier is om fysieke input en bediening te integreren met laptop of tablet en interface design. 
@@ -63,6 +68,9 @@ De HTML pagina, de HEX file en het MP3 geluidsbestandje zijn alle drie meegeleve
       }
   })
   ```
+Als je de code in de Micro:bit editor hebt geplakt, ziet het er als blokstructuur er zo uit:
+
+<img src="microbit_blocks.png" style="width:300px">
 
 ### Upload de code naar de micro:bit
 
@@ -266,3 +274,13 @@ De HTML pagina, de HEX file en het MP3 geluidsbestandje zijn alle drie meegeleve
   - **Logo omlaag (Logo Down)**: De div verandert naar een blauwe achtergrond en wordt vergroot en verkleind.
   - **Schudden (Shake)**: De div begint te schudden en het geluid `disco.mp3` wordt afgespeeld.
 
+----------------------
+**David van den Bor**  
+
+<img src="https://avatars.githubusercontent.com/u/124282406" style="width: 80px; max-width: 100%;"><img src="https://github.com/CMD-Groningen/.github/raw/main/davidvandenbor-rond.png" style="width: 70px; max-width: 100%;">
+
+Docent Communicatie & Multimedia Design @ Hanzehogeschool Groningen  
+d.b.p.van.den.bor@pl.hanze.nl  
+
+https://github.com/CMD-Groningen  
+https://github.com/davidvandenbor
